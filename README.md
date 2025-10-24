@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/91a03048-afac-44e4-8a95-c8ce998eefb0) and start prompting.
+Simply visit the [Project](https://learn-spline-chat.vercel.app/) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
