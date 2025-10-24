@@ -1,14 +1,13 @@
-# Welcome to your Lovable project
+# Welcome to ourproject
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/91a03048-afac-44e4-8a95-c8ce998eefb0
+**URL**: https://learn-spline-chat.vercel.app/
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
 
 Simply visit the [Project](https://learn-spline-chat.vercel.app/) and start prompting.
 
