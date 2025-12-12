@@ -4,8 +4,10 @@ import { toast } from "sonner";
 type Message = { 
   role: "user" | "assistant"; 
   content: string;
+  topic?: string;
   imageUrl?: string;
   imageLoading?: boolean;
+  showAnimation?: boolean;
 };
 
 export function useChat() {
@@ -48,11 +50,12 @@ export function useChat() {
 
   const sendMessage = useCallback(async (input: string) => {
     const userMsg: Message = { role: "user", content: input };
+    const topic = extractTopic(input);
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
 
     let assistantContent = "";
-    const upsertAssistant = (nextChunk: string, imageUrl?: string, imageLoading?: boolean) => {
+    const upsertAssistant = (nextChunk: string, updates?: Partial<Message>) => {
       assistantContent += nextChunk;
       setMessages(prev => {
         const last = prev[prev.length - 1];
@@ -60,14 +63,15 @@ export function useChat() {
           return prev.map((m, i) => (i === prev.length - 1 ? { 
             ...m, 
             content: assistantContent,
-            ...(imageUrl !== undefined && { imageUrl }),
-            ...(imageLoading !== undefined && { imageLoading }),
+            ...updates,
           } : m));
         }
         return [...prev, { 
           role: "assistant", 
           content: assistantContent,
+          topic,
           imageLoading: true,
+          showAnimation: true,
         }];
       });
     };
@@ -100,7 +104,6 @@ export function useChat() {
       if (!resp.body) throw new Error("No response body");
 
       // Start generating image in parallel
-      const topic = extractTopic(input);
       const imagePromise = generateTopicImage(topic, input);
 
       const reader = resp.body.getReader();
@@ -157,7 +160,7 @@ export function useChat() {
 
       // Wait for image and update message
       const imageUrl = await imagePromise;
-      upsertAssistant("", imageUrl || undefined, false);
+      upsertAssistant("", { imageUrl: imageUrl || undefined, imageLoading: false });
 
       setIsLoading(false);
     } catch (e) {
