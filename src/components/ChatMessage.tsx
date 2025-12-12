@@ -1,15 +1,18 @@
 import { cn } from "@/lib/utils";
 import { Bot, User, Volume2, VolumeX, ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { AnimatedExplanation } from "./AnimatedExplanation";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
   messageId: string;
+  topic?: string;
   imageUrl?: string;
   imageLoading?: boolean;
   isSpeaking?: boolean;
   isCurrentlySpeaking?: boolean;
+  showAnimation?: boolean;
   onSpeak?: (text: string, messageId: string) => void;
 }
 
@@ -17,10 +20,12 @@ export function ChatMessage({
   role, 
   content, 
   messageId,
+  topic,
   imageUrl,
   imageLoading,
   isSpeaking,
   isCurrentlySpeaking,
+  showAnimation = false,
   onSpeak 
 }: ChatMessageProps) {
   const isUser = role === "user";
@@ -37,6 +42,11 @@ export function ChatMessage({
         </div>
       )}
       <div className="flex flex-col gap-2 max-w-[80%]">
+        {/* 5-Second Animated Explanation */}
+        {isAssistant && topic && (
+          <AnimatedExplanation topic={topic} isVisible={showAnimation} />
+        )}
+
         {/* Topic Image */}
         {isAssistant && (imageLoading || imageUrl) && (
           <div className="relative overflow-hidden rounded-xl border border-border bg-card animate-in fade-in duration-500">
