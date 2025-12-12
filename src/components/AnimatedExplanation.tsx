@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Atom, BookOpen, Calculator, FlaskConical, Globe, Lightbulb, Music, Palette, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -233,19 +232,10 @@ const animations: Record<AnimationType, React.FC> = {
 };
 
 export function AnimatedExplanation({ topic, isVisible }: AnimatedExplanationProps) {
-  const [show, setShow] = useState(true);
   const animationType = detectAnimationType(topic);
   const AnimationComponent = animations[animationType];
 
-  useEffect(() => {
-    if (isVisible) {
-      setShow(true);
-      const timer = setTimeout(() => setShow(false), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [isVisible]);
-
-  if (!show || !isVisible) return null;
+  if (!isVisible) return null;
 
   return (
     <div className={cn(
@@ -253,9 +243,6 @@ export function AnimatedExplanation({ topic, isVisible }: AnimatedExplanationPro
       "animate-in fade-in zoom-in-95 duration-500"
     )}>
       <AnimationComponent />
-      <div className="h-1 bg-primary/20 overflow-hidden">
-        <div className="h-full bg-primary animate-progress-bar" />
-      </div>
     </div>
   );
 }
