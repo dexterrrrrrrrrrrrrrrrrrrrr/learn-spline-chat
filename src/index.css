@@ -119,6 +119,31 @@ All colors MUST be HSL.
   animation: float linear infinite;
 }
 
+/* Floating image animation */
+@keyframes float-image {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-0.5deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(0.3deg);
+  }
+}
+
+.animate-float-image {
+  animation: float-image 4s ease-in-out infinite;
+}
+
+/* Perspective utility */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
 /* Electron orbit animation */
 @keyframes orbit {
   0% {
