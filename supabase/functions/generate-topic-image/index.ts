@@ -21,13 +21,12 @@ serve(async (req) => {
     console.log("Generating image for topic:", topic);
 
     // Create an animated GIF-style, kid-friendly image prompt
-    const imagePrompt = `Create a GIPHY-style animated educational illustration for: ${topic}. 
+    const imagePrompt = `Generate an image: A GIPHY-style animated educational illustration about ${topic}. 
     Style: Colorful, playful, modern 3D-cartoonish with soft lighting.
     Include: Cute animated elements like floating icons, sparkles, motion lines, and dynamic poses.
     Add relevant educational symbols (books, lightbulbs, pencils, formulas, diagrams) floating around.
     Make it visually engaging and fun for students aged 10-18.
-    The image should look like a frame from an animated loop - vibrant, energetic, and educational.
-    Context: ${context || topic}`;
+    The image should look like a frame from an animated loop - vibrant, energetic, and educational.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -36,7 +35,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-image-preview",
+        model: "google/gemini-3-pro-image-preview",
         messages: [
           {
             role: "user",
