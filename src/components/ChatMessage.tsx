@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
-import { Bot, User, Volume2, VolumeX } from "lucide-react";
+import { Bot, User, Volume2, VolumeX, ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
   messageId: string;
+  imageUrl?: string;
+  imageLoading?: boolean;
   isSpeaking?: boolean;
   isCurrentlySpeaking?: boolean;
   onSpeak?: (text: string, messageId: string) => void;
@@ -15,6 +17,8 @@ export function ChatMessage({
   role, 
   content, 
   messageId,
+  imageUrl,
+  imageLoading,
   isSpeaking,
   isCurrentlySpeaking,
   onSpeak 
@@ -33,6 +37,33 @@ export function ChatMessage({
         </div>
       )}
       <div className="flex flex-col gap-2 max-w-[80%]">
+        {/* Topic Image */}
+        {isAssistant && (imageLoading || imageUrl) && (
+          <div className="relative overflow-hidden rounded-xl border border-border bg-card animate-in fade-in duration-500">
+            {imageLoading && !imageUrl ? (
+              <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
+                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                  <div className="relative">
+                    <ImageIcon className="w-8 h-8 animate-pulse" />
+                    <Loader2 className="w-4 h-4 absolute -bottom-1 -right-1 animate-spin text-primary" />
+                  </div>
+                  <span className="text-xs">Generating illustration...</span>
+                </div>
+              </div>
+            ) : imageUrl ? (
+              <div className="relative group/image">
+                <img 
+                  src={imageUrl} 
+                  alt="Educational illustration"
+                  className="w-full max-h-64 object-cover rounded-xl animate-in zoom-in-95 duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity rounded-xl" />
+              </div>
+            ) : null}
+          </div>
+        )}
+
+        {/* Message Content */}
         <div
           className={cn(
             "rounded-2xl px-4 py-3 shadow-sm transition-all",
