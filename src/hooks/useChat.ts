@@ -155,15 +155,9 @@ export function useChat() {
         }
       }
 
-      // Only generate image if response is 150+ words
-      const wordCount = assistantContent.split(/\s+/).filter(w => w.length > 0).length;
-      
-      if (wordCount >= 150) {
-        const imageUrl = await generateTopicImage(topic, input);
-        upsertAssistant("", { imageUrl: imageUrl || undefined, imageLoading: false });
-      } else {
-        upsertAssistant("", { imageLoading: false });
-      }
+      // Always generate animated image for responses
+      const imageUrl = await generateTopicImage(topic, input);
+      upsertAssistant("", { imageUrl: imageUrl || undefined, imageLoading: false });
 
       setIsLoading(false);
     } catch (e) {
