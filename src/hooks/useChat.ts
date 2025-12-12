@@ -1,11 +1,50 @@
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
-type Message = { role: "user" | "assistant"; content: string };
+type Message = { 
+  role: "user" | "assistant"; 
+  content: string;
+  imageUrl?: string;
+  imageLoading?: boolean;
+};
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const generateTopicImage = async (topic: string, context: string): Promise<string | null> => {
+    try {
+      const IMAGE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-topic-image`;
+      const resp = await fetch(IMAGE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ topic, context }),
+      });
+
+      if (!resp.ok) {
+        console.error("Image generation failed:", resp.status);
+        return null;
+      }
+
+      const data = await resp.json();
+      return data.imageUrl || null;
+    } catch (error) {
+      console.error("Error generating image:", error);
+      return null;
+    }
+  };
+
+  const extractTopic = (userMessage: string): string => {
+    // Extract the main topic from the user's question
+    const cleanMessage = userMessage
+      .replace(/^(explain|teach me|help me with|what is|how does|tell me about|describe)\s*/i, "")
+      .replace(/\?$/, "")
+      .trim();
+    return cleanMessage || userMessage;
+  };
 
   const sendMessage = useCallback(async (input: string) => {
     const userMsg: Message = { role: "user", content: input };
@@ -13,14 +52,23 @@ export function useChat() {
     setIsLoading(true);
 
     let assistantContent = "";
-    const upsertAssistant = (nextChunk: string) => {
+    const upsertAssistant = (nextChunk: string, imageUrl?: string, imageLoading?: boolean) => {
       assistantContent += nextChunk;
       setMessages(prev => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant") {
-          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantContent } : m));
+          return prev.map((m, i) => (i === prev.length - 1 ? { 
+            ...m, 
+            content: assistantContent,
+            ...(imageUrl !== undefined && { imageUrl }),
+            ...(imageLoading !== undefined && { imageLoading }),
+          } : m));
         }
-        return [...prev, { role: "assistant", content: assistantContent }];
+        return [...prev, { 
+          role: "assistant", 
+          content: assistantContent,
+          imageLoading: true,
+        }];
       });
     };
 
@@ -50,6 +98,10 @@ export function useChat() {
       }
 
       if (!resp.body) throw new Error("No response body");
+
+      // Start generating image in parallel
+      const topic = extractTopic(input);
+      const imagePromise = generateTopicImage(topic, input);
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -102,6 +154,10 @@ export function useChat() {
           } catch { /* ignore */ }
         }
       }
+
+      // Wait for image and update message
+      const imageUrl = await imagePromise;
+      upsertAssistant("", imageUrl || undefined, false);
 
       setIsLoading(false);
     } catch (e) {

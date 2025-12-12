@@ -89,6 +89,8 @@ const Index = () => {
                   role={msg.role} 
                   content={msg.content}
                   messageId={`msg-${idx}`}
+                  imageUrl={msg.imageUrl}
+                  imageLoading={msg.imageLoading}
                   isSpeaking={isSpeaking}
                   isCurrentlySpeaking={currentMessageId === `msg-${idx}`}
                   onSpeak={speak}
