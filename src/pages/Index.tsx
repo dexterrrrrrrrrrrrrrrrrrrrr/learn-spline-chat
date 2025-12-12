@@ -4,7 +4,8 @@ import { ChatInput } from "@/components/ChatInput";
 import { useChat } from "@/hooks/useChat";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
 import { FloatingElements } from "@/components/FloatingElements";
-import { GraduationCap, Sparkles, Volume2 } from "lucide-react";
+import { AnimatedRobot } from "@/components/AnimatedRobot";
+import { GraduationCap, Volume2 } from "lucide-react";
 
 const Index = () => {
   const { messages, isLoading, sendMessage } = useChat();
@@ -52,12 +53,9 @@ const Index = () => {
         <div className="flex-1 overflow-y-auto space-y-6 mb-6">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-6 animate-in fade-in duration-700">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse" />
-                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border">
-                  <Sparkles className="w-12 h-12 text-primary" />
-                </div>
-              </div>
+              {/* Animated Robot Mascot */}
+              <AnimatedRobot />
+              
               <div className="text-center space-y-2 max-w-md">
                 <h2 className="text-2xl font-semibold text-foreground">Welcome to EduBot!</h2>
                 <p className="text-muted-foreground">

@@ -402,3 +402,230 @@ All colors MUST be HSL.
 .animate-progress-bar {
   animation: progress-bar 5s linear forwards;
 }
+
+/* Robot bobbing animation */
+@keyframes robot-bob {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-8px);
+  }
+}
+
+.animate-robot-bob {
+  animation: robot-bob 2s ease-in-out infinite;
+}
+
+/* Eye blink animation */
+@keyframes eye-blink {
+  0%, 45%, 55%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.1);
+  }
+}
+
+.animate-eye-blink {
+  animation: eye-blink 3s ease-in-out infinite;
+}
+
+/* Antenna blink animation */
+@keyframes antenna-blink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px hsl(340, 80%, 60%);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 20px hsl(340, 80%, 70%);
+  }
+}
+
+.animate-antenna-blink {
+  animation: antenna-blink 1s ease-in-out infinite;
+}
+
+/* Ear glow animation */
+@keyframes ear-glow {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 8px hsl(145, 70%, 50%);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 16px hsl(145, 70%, 60%);
+  }
+}
+
+.animate-ear-glow {
+  animation: ear-glow 1.5s ease-in-out infinite;
+}
+
+/* Heart beat animation */
+@keyframes heart-beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+}
+
+.animate-heart-beat {
+  animation: heart-beat 1s ease-in-out infinite;
+}
+
+/* Button blink animation */
+@keyframes button-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-button-blink {
+  animation: button-blink 0.8s ease-in-out infinite;
+}
+
+/* Wave left arm animation */
+@keyframes wave-left {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.animate-wave-left {
+  animation: wave-left 1.2s ease-in-out infinite;
+}
+
+/* Wave right arm animation */
+@keyframes wave-right {
+  0%, 100% {
+    transform: rotate(5deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(20deg);
+  }
+}
+
+.animate-wave-right {
+  animation: wave-right 0.8s ease-in-out infinite;
+}
+
+/* Smile animation */
+@keyframes smile {
+  0%, 100% {
+    width: 2rem;
+  }
+  50% {
+    width: 2.5rem;
+  }
+}
+
+.animate-smile {
+  animation: smile 2s ease-in-out infinite;
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Twinkle float animation */
+@keyframes twinkle-float {
+  0%, 100% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+.animate-twinkle-float {
+  animation: twinkle-float 2s ease-in-out infinite;
+}
+
+/* Float letter animation */
+@keyframes float-letter {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+.animate-float-letter {
+  animation: float-letter 3s ease-in-out infinite;
+}
+
+/* Float number animation */
+@keyframes float-number {
+  0%, 100% {
+    transform: translateY(0) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-5deg);
+  }
+}
+
+.animate-float-number {
+  animation: float-number 2.5s ease-in-out infinite;
+}
+
+/* Float book animation */
+@keyframes float-book {
+  0%, 100% {
+    transform: translateY(0) rotate(-10deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(10deg);
+  }
+}
+
+.animate-float-book {
+  animation: float-book 3.5s ease-in-out infinite;
+}
+
+/* Float pencil animation */
+@keyframes float-pencil {
+  0%, 100% {
+    transform: translateY(0) rotate(-30deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-20deg);
+  }
+}
+
+.animate-float-pencil {
+  animation: float-pencil 2.8s ease-in-out infinite;
+}
