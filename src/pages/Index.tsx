@@ -2,10 +2,13 @@ import { useEffect, useRef } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { useChat } from "@/hooks/useChat";
-import { GraduationCap, Sparkles } from "lucide-react";
+import { useTextToSpeech } from "@/hooks/useTextToSpeech";
+import { FloatingElements } from "@/components/FloatingElements";
+import { GraduationCap, Sparkles, Volume2 } from "lucide-react";
 
 const Index = () => {
   const { messages, isLoading, sendMessage } = useChat();
+  const { speak, isSpeaking, currentMessageId } = useTextToSpeech();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -17,20 +20,28 @@ const Index = () => {
   }, [messages]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
+      {/* Floating animated elements */}
+      <FloatingElements />
+      
+      {/* Gradient orbs for visual interest */}
+      <div className="fixed top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse pointer-events-none" />
+      <div className="fixed bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse pointer-events-none" style={{ animationDelay: "1s" }} />
+      
       {/* Header */}
       <header className="sticky top-0 z-10 backdrop-blur-lg bg-background/80 border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-accent">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-accent animate-pulse">
               <GraduationCap className="w-6 h-6 text-primary-foreground" />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               EduBot
             </h1>
+            <Volume2 className="w-4 h-4 text-muted-foreground" />
           </div>
           <p className="text-center text-sm text-muted-foreground mt-2">
-            Your AI-powered educational assistant
+            Your AI-powered educational assistant • Hover messages to listen 🔊
           </p>
         </div>
       </header>
@@ -73,7 +84,15 @@ const Index = () => {
           ) : (
             <>
               {messages.map((msg, idx) => (
-                <ChatMessage key={idx} role={msg.role} content={msg.content} />
+                <ChatMessage 
+                  key={idx} 
+                  role={msg.role} 
+                  content={msg.content}
+                  messageId={`msg-${idx}`}
+                  isSpeaking={isSpeaking}
+                  isCurrentlySpeaking={currentMessageId === `msg-${idx}`}
+                  onSpeak={speak}
+                />
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-3 animate-pulse">
