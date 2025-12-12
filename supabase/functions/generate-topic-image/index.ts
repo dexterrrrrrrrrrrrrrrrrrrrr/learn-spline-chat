@@ -20,11 +20,13 @@ serve(async (req) => {
 
     console.log("Generating image for topic:", topic);
 
-    // Create an educational, kid-friendly image prompt
-    const imagePrompt = `Educational illustration for students: ${topic}. 
-    Style: Colorful, friendly, cartoon-like educational diagram or illustration. 
-    Make it visually engaging for students aged 10-18. 
-    Include relevant visual elements that help explain the concept.
+    // Create an animated GIF-style, kid-friendly image prompt
+    const imagePrompt = `Create a GIPHY-style animated educational illustration for: ${topic}. 
+    Style: Colorful, playful, modern 3D-cartoonish with soft lighting.
+    Include: Cute animated elements like floating icons, sparkles, motion lines, and dynamic poses.
+    Add relevant educational symbols (books, lightbulbs, pencils, formulas, diagrams) floating around.
+    Make it visually engaging and fun for students aged 10-18.
+    The image should look like a frame from an animated loop - vibrant, energetic, and educational.
     Context: ${context || topic}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {

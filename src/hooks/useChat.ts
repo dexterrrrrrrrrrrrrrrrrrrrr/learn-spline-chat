@@ -103,9 +103,6 @@ export function useChat() {
 
       if (!resp.body) throw new Error("No response body");
 
-      // Start generating image in parallel
-      const imagePromise = generateTopicImage(topic, input);
-
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       let textBuffer = "";
@@ -158,9 +155,15 @@ export function useChat() {
         }
       }
 
-      // Wait for image and update message
-      const imageUrl = await imagePromise;
-      upsertAssistant("", { imageUrl: imageUrl || undefined, imageLoading: false });
+      // Only generate image if response is 150+ words
+      const wordCount = assistantContent.split(/\s+/).filter(w => w.length > 0).length;
+      
+      if (wordCount >= 150) {
+        const imageUrl = await generateTopicImage(topic, input);
+        upsertAssistant("", { imageUrl: imageUrl || undefined, imageLoading: false });
+      } else {
+        upsertAssistant("", { imageLoading: false });
+      }
 
       setIsLoading(false);
     } catch (e) {
