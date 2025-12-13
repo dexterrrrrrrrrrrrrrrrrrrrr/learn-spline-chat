@@ -3,6 +3,7 @@ import { Bot, User, Volume2, VolumeX, ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { AnimatedExplanation } from "./AnimatedExplanation";
 import { InteractiveImage } from "./InteractiveImage";
+import { StepByStepExplanation } from "./StepByStepExplanation";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -42,7 +43,16 @@ export function ChatMessage({
           <Bot className="w-5 h-5 text-primary-foreground" />
         </div>
       )}
-      <div className="flex flex-col gap-2 max-w-[80%]">
+      <div className="flex flex-col gap-3 max-w-[80%]">
+        {/* Interactive Step-by-Step Explanation */}
+        {isAssistant && topic && content && content.length > 50 && (
+          <StepByStepExplanation 
+            content={content} 
+            topic={topic} 
+            isVisible={showAnimation} 
+          />
+        )}
+        
         {/* 5-Second Animated Explanation */}
         {isAssistant && topic && (
           <AnimatedExplanation topic={topic} isVisible={showAnimation} />
