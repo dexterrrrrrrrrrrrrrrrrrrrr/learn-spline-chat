@@ -80,6 +80,17 @@ export function ChatMessage({
           </div>
         )}
 
+        {/* User Attached Image */}
+        {isUser && imageUrl && (
+          <div className="rounded-xl overflow-hidden max-w-xs">
+            <img 
+              src={imageUrl} 
+              alt="Attached" 
+              className="w-full h-auto object-cover rounded-xl"
+            />
+          </div>
+        )}
+
         {/* Message Content */}
         <div
           className={cn(

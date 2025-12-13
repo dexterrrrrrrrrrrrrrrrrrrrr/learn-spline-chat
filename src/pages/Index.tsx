@@ -115,7 +115,7 @@ const Index = () => {
 
         {/* Input */}
         <div className="sticky bottom-0 bg-background pt-4 border-t border-border">
-          <ChatInput onSend={sendMessage} disabled={isLoading} />
+          <ChatInput onSend={(msg, file) => sendMessage(msg, file)} disabled={isLoading} />
         </div>
       </main>
     </div>
