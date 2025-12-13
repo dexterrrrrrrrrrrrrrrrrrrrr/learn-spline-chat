@@ -27,10 +27,14 @@ export function useTextToSpeech() {
     utterance.pitch = 1;
     utterance.volume = 1;
 
-    // Try to get a nice English voice
+    // Try to get an Indian English female voice for teacher-like experience
     const voices = window.speechSynthesis.getVoices();
     const preferredVoice = voices.find(
-      (v) => v.lang.startsWith("en") && v.name.includes("Google")
+      (v) => v.lang === "en-IN" && v.name.toLowerCase().includes("female")
+    ) || voices.find(
+      (v) => v.lang === "en-IN"
+    ) || voices.find(
+      (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
     ) || voices.find((v) => v.lang.startsWith("en"));
     
     if (preferredVoice) {
