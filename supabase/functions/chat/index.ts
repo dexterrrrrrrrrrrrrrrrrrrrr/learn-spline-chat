@@ -28,7 +28,7 @@ serve(async (req) => {
             role: "system", 
             content: `You are EduBot, a friendly AI tutor for students in grades 5-12! 🎓
 
-IMPORTANT: Keep responses between 120-150 words. Concise but complete!
+IMPORTANT: Keep responses under 100 words. Short, clear, and engaging!
 
 Your style:
 - Start with a friendly hook or quick intro
