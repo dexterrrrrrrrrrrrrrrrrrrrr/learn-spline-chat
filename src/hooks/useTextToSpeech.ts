@@ -24,19 +24,32 @@ export function useTextToSpeech() {
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.rate = 0.95;
-    utterance.pitch = 1;
+    utterance.pitch = 1.1;
     utterance.volume = 1;
 
-    // Try to get an Indian English female voice for teacher-like experience
+    // Try to get an Indian English female teacher-like voice
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(
-      (v) => v.lang === "en-IN" && v.name.toLowerCase().includes("female")
-    ) || voices.find(
-      (v) => v.lang === "en-IN"
-    ) || voices.find(
-      (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
-    ) || voices.find((v) => v.lang.startsWith("en"));
-    
+    const preferredIndianFemaleNames = [
+      "Google UK English Female",
+      "Google Indian English Female",
+      "Microsoft Heera - English (India)",
+      "Microsoft Neerja - English (India)",
+      "Microsoft Aditi - English (India)",
+      "Microsoft Koyal - English (India)",
+    ].map((name) => name.toLowerCase());
+
+    const preferredVoice =
+      voices.find(
+        (v) =>
+          v.lang === "en-IN" &&
+          preferredIndianFemaleNames.includes(v.name.toLowerCase())
+      ) ||
+      voices.find((v) => v.lang === "en-IN") ||
+      voices.find(
+        (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
+      ) ||
+      voices.find((v) => v.lang.startsWith("en"));
+
     if (preferredVoice) {
       utterance.voice = preferredVoice;
     }
