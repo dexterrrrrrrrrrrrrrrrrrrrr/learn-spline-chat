@@ -48,9 +48,31 @@ export function useChat() {
     return cleanMessage || userMessage;
   };
 
-  const sendMessage = useCallback(async (input: string) => {
-    const userMsg: Message = { role: "user", content: input };
-    const topic = extractTopic(input);
+  const sendMessage = useCallback(async (input: string, file?: File) => {
+    let messageContent = input;
+    let fileDataUrl: string | undefined;
+
+    // If file is attached, convert to base64 for images
+    if (file) {
+      if (file.type.startsWith("image/")) {
+        fileDataUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+        messageContent = input || `[Attached image: ${file.name}]`;
+      } else {
+        // For non-image files, just mention it
+        messageContent = input ? `${input}\n\n[Attached file: ${file.name}]` : `[Attached file: ${file.name}]`;
+      }
+    }
+
+    const userMsg: Message = { 
+      role: "user", 
+      content: messageContent,
+      imageUrl: fileDataUrl,
+    };
+    const topic = extractTopic(input || file?.name || "");
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
 
@@ -78,13 +100,25 @@ export function useChat() {
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+      
+      // Build message for API - include image data if present
+      const apiMessages = [...messages, { 
+        role: userMsg.role, 
+        content: fileDataUrl 
+          ? [
+              { type: "text", text: messageContent },
+              { type: "image_url", image_url: { url: fileDataUrl } }
+            ]
+          : messageContent 
+      }];
+
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
+        body: JSON.stringify({ messages: apiMessages }),
       });
 
       if (!resp.ok) {
